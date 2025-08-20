@@ -20,7 +20,6 @@
             max-width: 600px; 
             height: 500px; 
             background-color: transparent; 
-            transform: rotateZ(-10deg); /* наклон модели */
         }
     </style>
 </head>
@@ -34,7 +33,7 @@
                   interaction-prompt="none"
                   alpha-mode="BLEND"
                   lighting="none"
-                  camera-orbit="90deg 90deg 0deg"> 
+                  camera-orbit="100deg 90deg 0deg"> <!-- слегка наклонена вверх по оси X -->
     </model-viewer>
 
     <script>
@@ -42,11 +41,10 @@
 
         let targetX = 0, targetY = 0;
         let currentX = 0, currentY = 0;
-        const inertia = 0.1; // Плавность движения
+        const inertia = 0.1;
 
         document.addEventListener('mousemove', (event) => {
             const { innerWidth, innerHeight } = window;
-            // Вращение камеры в зависимости от положения курсора
             targetX = -(event.clientX / innerWidth - 0.5) * 2;
             targetY = (event.clientY / innerHeight - 0.5) * 2;
         });
@@ -54,7 +52,10 @@
         function animate() {
             currentX += (targetX - currentX) * inertia;
             currentY += (targetY - currentY) * inertia;
-            modelViewer.setAttribute('camera-orbit', `${90 + currentY * 20}deg ${90 + currentX * 20}deg 0deg`);
+            // camera-orbit: (theta, phi, radius)
+            // theta — вращение вокруг вертикальной оси (Y)
+            // phi — вращение вверх-вниз
+            modelViewer.setAttribute('camera-orbit', `${100 + currentY * 20}deg ${90 + currentX * 20}deg 0deg`);
             requestAnimationFrame(animate);
         }
         animate();
