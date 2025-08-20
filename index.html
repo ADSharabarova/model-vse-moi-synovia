@@ -26,7 +26,7 @@
 <body>
 
     <model-viewer id="viewer"
-                  src="https://cdn.glitch.me/214fb7a5-dea4-4b81-96a7-e1c5bd31bf98/%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C%D0%BA%D0%B0.glb?v=1739723327142"
+                  src="model/myModel.glb"
                   alt="3D-модель"
                   disable-zoom
                   disable-tap
@@ -46,7 +46,7 @@
         document.addEventListener('mousemove', (event) => {
             const { innerWidth, innerHeight } = window;
             
-            // Теперь вращение **действительно в противоположную сторону**
+            // Вращение модели в зависимости от положения курсора
             targetX = -(event.clientX / innerWidth - 0.5) * 2;
             targetY = (event.clientY / innerHeight - 0.5) * 2;
         });
@@ -55,7 +55,6 @@
             currentX += (targetX - currentX) * inertia;
             currentY += (targetY - currentY) * inertia;
             
-            // Уменьшил угол, чтобы модель не уходила слишком далеко
             modelViewer.setAttribute('camera-orbit', `${90 + currentY * 20}deg ${90 + currentX * 20}deg 0deg`);
             
             requestAnimationFrame(animate);
