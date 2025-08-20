@@ -33,7 +33,7 @@
               interaction-prompt="none"
               alpha-mode="BLEND"
               lighting="none"
-              camera-orbit="90deg 90deg 0deg">
+              camera-orbit="90deg 90deg 0deg"> 
 </model-viewer>
 
 <script>
@@ -41,27 +41,23 @@
 
     let targetX = 0, targetY = 0;
     let currentX = 0, currentY = 0;
-    let inertia = 0.1; // плавность движения
+    const inertia = 0.1; // Плавность движения
 
     document.addEventListener('mousemove', (event) => {
         const { innerWidth, innerHeight } = window;
-        // Поменяли знак, чтобы правая часть поднималась вверх
-        targetX = (event.clientX / innerWidth - 0.5) * 2; 
+        targetX = -(event.clientX / innerWidth - 0.5) * 2;
         targetY = (event.clientY / innerHeight - 0.5) * 2;
     });
 
     function animate() {
         currentX += (targetX - currentX) * inertia;
         currentY += (targetY - currentY) * inertia;
-
-        // camera-orbit: вертикаль (Y) / горизонталь (X) / расстояние
-        modelViewer.setAttribute(
-            'camera-orbit',
-            `${90 + currentY * 20}deg ${90 + currentX * 20}deg 0deg`
-        );
-
+        
+        modelViewer.setAttribute('camera-orbit', `${90 + currentY * 20}deg ${90 + currentX * 20}deg 0deg`);
+        
         requestAnimationFrame(animate);
     }
+
     animate();
 </script>
 
