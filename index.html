@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D-модель с параллакс-вращением</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        body { 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background-color: transparent; 
+            overflow: hidden;
+        }
+        model-viewer { 
+            width: 100%; 
+            max-width: 600px; 
+            height: 500px; 
+            background-color: transparent; 
+        }
+    </style>
+</head>
+<body>
+
+    <model-viewer id="viewer"
+                  src="https://cdn.glitch.me/214fb7a5-dea4-4b81-96a7-e1c5bd31bf98/%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C%D0%BA%D0%B0.glb?v=1739723327142"
+                  alt="3D-модель"
+                  disable-zoom
+                  disable-tap
+                  interaction-prompt="none"
+                  alpha-mode="BLEND"
+                  lighting="none"
+                  camera-orbit="90deg 90deg 0deg"> 
+    </model-viewer>
+
+    <script>
+        const modelViewer = document.getElementById('viewer');
+
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+        let inertia = 0.1; // Плавность движения
+
+        document.addEventListener('mousemove', (event) => {
+            const { innerWidth, innerHeight } = window;
+            
+            // Теперь вращение **действительно в противоположную сторону**
+            targetX = -(event.clientX / innerWidth - 0.5) * 2;
+            targetY = (event.clientY / innerHeight - 0.5) * 2;
+        });
+
+        function animate() {
+            currentX += (targetX - currentX) * inertia;
+            currentY += (targetY - currentY) * inertia;
+            
+            // Уменьшил угол, чтобы модель не уходила слишком далеко
+            modelViewer.setAttribute('camera-orbit', `${90 + currentY * 20}deg ${90 + currentX * 20}deg 0deg`);
+            
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+
+</body>
+</html>
