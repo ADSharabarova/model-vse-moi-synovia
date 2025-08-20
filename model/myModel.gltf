@@ -4198,7 +4198,7 @@
 	"images":[
 		{
 			"mimeType":"image/jpeg",
-			"name":"baked_texture",
+			"name":"texture",
 			"uri": "textures/texture.jpg"
 		}
 	],
