@@ -25,7 +25,7 @@
 </head>
 <body>
 
-    <model-viewer id="viewer"
+<model-viewer id="viewer"
               src="https://raw.githubusercontent.com/ADSharabarova/model-vse-moi-synovia/main/model/myModel.gltf"
               alt="3D-модель"
               disable-zoom
@@ -33,33 +33,37 @@
               interaction-prompt="none"
               alpha-mode="BLEND"
               lighting="none"
-              camera-orbit="90deg 90deg 0deg"> <!-- слегка наклонена вверх по оси X -->
-    </model-viewer>
+              camera-orbit="90deg 90deg 0deg">
+</model-viewer>
 
-    <script>
-        const modelViewer = document.getElementById('viewer');
+<script>
+    const modelViewer = document.getElementById('viewer');
 
-        let targetX = 0, targetY = 0;
-        let currentX = 0, currentY = 0;
-        const inertia = 0.1;
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+    let inertia = 0.1; // плавность движения
 
-        document.addEventListener('mousemove', (event) => {
-            const { innerWidth, innerHeight } = window;
-            targetX = -(event.clientX / innerWidth - 0.5) * 2;
-            targetY = (event.clientY / innerHeight - 0.5) * 2;
-        });
+    document.addEventListener('mousemove', (event) => {
+        const { innerWidth, innerHeight } = window;
+        // Поменяли знак, чтобы правая часть поднималась вверх
+        targetX = (event.clientX / innerWidth - 0.5) * 2; 
+        targetY = (event.clientY / innerHeight - 0.5) * 2;
+    });
 
-        function animate() {
-            currentX += (targetX - currentX) * inertia;
-            currentY += (targetY - currentY) * inertia;
-            // camera-orbit: (theta, phi, radius)
-            // theta — вращение вокруг вертикальной оси (Y)
-            // phi — вращение вверх-вниз
-            modelViewer.setAttribute('camera-orbit', `${100 + currentY * 20}deg ${90 + currentX * 20}deg 0deg`);
-            requestAnimationFrame(animate);
-        }
-        animate();
-    </script>
+    function animate() {
+        currentX += (targetX - currentX) * inertia;
+        currentY += (targetY - currentY) * inertia;
+
+        // camera-orbit: вертикаль (Y) / горизонталь (X) / расстояние
+        modelViewer.setAttribute(
+            'camera-orbit',
+            `${90 + currentY * 20}deg ${90 + currentX * 20}deg 0deg`
+        );
+
+        requestAnimationFrame(animate);
+    }
+    animate();
+</script>
 
 </body>
 </html>
