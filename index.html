@@ -25,42 +25,48 @@
 </head>
 <body>
 
-<model-viewer id="viewer"
-              src="https://raw.githubusercontent.com/ADSharabarova/model-vse-moi-synovia/main/model/myModel.gltf"
-              alt="3D-модель"
-              disable-zoom
-              disable-tap
-              interaction-prompt="none"
-              alpha-mode="BLEND"
-              lighting="none"
-              camera-orbit="0deg 90deg 0deg"> 
-</model-viewer>
+    <model-viewer id="viewer"
+                  src="https://raw.githubusercontent.com/ADSharabarova/model-vse-moi-synovia/main/model/myModel.gltf"
+                  alt="3D-модель"
+                  disable-zoom
+                  disable-tap
+                  interaction-prompt="none"
+                  alpha-mode="BLEND"
+                  lighting="none"
+                  camera-orbit="85deg 90deg 0deg"> 
+    </model-viewer>
 
-<script>
-    const modelViewer = document.getElementById('viewer');
+    <script>
+        const modelViewer = document.getElementById('viewer');
 
-    let targetX = 0, targetY = 0;
-    let currentX = 0, currentY = 0;
-    const inertia = 0.1; // Плавность движения
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+        const inertia = 0.1; // плавность движения
 
-    document.addEventListener('mousemove', (event) => {
-        const { innerWidth, innerHeight } = window;
-        targetX = -(event.clientX / innerWidth - 0.5) * 2;
-        targetY = (event.clientY / innerHeight - 0.5) * 2;
-    });
+        // базовый наклон модели
+        const baseVertical = 85; // уменьшили с 90 — правая часть поднялась
+        const baseHorizontal = 90; // центр по горизонтали
 
-    function animate() {
-        currentX += (targetX - currentX) * inertia;
-        currentY += (targetY - currentY) * inertia;
-        
-        // Исправленный camera-orbit, чтобы модель не переворачивалась
-        modelViewer.setAttribute('camera-orbit', `${0 + currentY * 20}deg ${90 + currentX * 20}deg 0deg`);
-        
-        requestAnimationFrame(animate);
-    }
+        document.addEventListener('mousemove', (event) => {
+            const { innerWidth, innerHeight } = window;
+            
+            targetX = -(event.clientX / innerWidth - 0.5) * 2;
+            targetY = (event.clientY / innerHeight - 0.5) * 2;
+        });
 
-    animate();
-</script>
+        function animate() {
+            currentX += (targetX - currentX) * inertia;
+            currentY += (targetY - currentY) * inertia;
+
+            modelViewer.setAttribute(
+                'camera-orbit',
+                `${baseVertical + currentY * 20}deg ${baseHorizontal + currentX * 20}deg 0deg`
+            );
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 
 </body>
 </html>
