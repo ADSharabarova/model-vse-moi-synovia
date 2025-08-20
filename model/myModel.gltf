@@ -4199,7 +4199,7 @@
 		{
 			"mimeType":"image/jpeg",
 			"name":"baked_texture",
-			"uri":"%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0%D0%B0/baked_texture.jpg"
+			"uri": "textures/texture.jpg"
 		}
 	],
 	"accessors":[
